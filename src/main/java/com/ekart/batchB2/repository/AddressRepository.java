@@ -1,0 +1,8 @@
+package com.ekart.batchB2.repository;
+
+import com.ekart.batchB2.entity.Address;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface AddressRepository extends MongoRepository<Address, String> {
+    // Additional query methods can be defined here if needed
+}
