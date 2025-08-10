@@ -1,97 +1,47 @@
 package com.ekart.batchB2.dto;
 
-import com.ekart.batchB2.entity.Address;
-import org.bson.types.ObjectId;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
+import lombok.*;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AddressDTO {
 
-    private String id;
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s\\.'-]+$", message = "Name can only contain letters, spaces, and basic punctuation")
+    private String name;
 
-    private ObjectId userId;
-
+    @NotBlank(message = "Street address is required")
+    @Size(max = 200, message = "Street address cannot exceed 200 characters")
     private String street;
+
+    @NotBlank(message = "City is required")
+    @Size(max = 100, message = "City name cannot exceed 100 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s\\.'-]+$", message = "Invalid city name")
     private String city;
+
+    @NotBlank(message = "State is required")
+    @Size(max = 100, message = "State name cannot exceed 100 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s\\.'-]+$", message = "Invalid state name")
     private String state;
-    private String zipCode;
+
+    @NotNull(message = "ZIP code is required")
+    @Min(value = 100000, message = "Zip code must be exactly 6 digits")
+    @Max(value = 999999, message = "Zip code must be exactly 6 digits")
+    private Integer zipCode;
+
+    @NotBlank(message = "Country is required")
+    @Size(max = 100, message = "Country name cannot exceed 100 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s\\.'-]+$", message = "Invalid country name")
     private String country;
 
-    // Constructors
-    public AddressDTO() {}
-
-    public AddressDTO(String id, ObjectId userId, String street, String city, String state, String zipCode, String country) {
-        super();
-        this.id = id;
-        this.userId = userId;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
-        this.country = country;
-    }
-
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public ObjectId getUserId() {
-        return userId;
-    }
-
-    public void setUserId(ObjectId userId) {
-        this.userId = userId;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public static Address prepareAddressEntity(AddressDTO addressDTO) {
-        Address address = new Address();
-        address.setUserId(addressDTO.getUserId());
-        address.setStreet(addressDTO.getStreet());
-        address.setCity(addressDTO.getCity());
-        address.setState(addressDTO.getState());
-        address.setZipCode(addressDTO.getZipCode());
-        address.setCountry(addressDTO.getCountry());
-        return address;
-    }
+    private Boolean isDefault;
 }
