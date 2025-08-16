@@ -1,6 +1,7 @@
 package com.ekart.batchB2.controller;
 
 import com.ekart.batchB2.dto.LoginDTO;
+import com.ekart.batchB2.exceptionhandler.DuplicateUserException;
 import com.ekart.batchB2.exceptionhandler.UserNotFoundException;
 import com.ekart.batchB2.service.UserService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/create", consumes = "application/json")
-    public ResponseEntity<String> createUser(@RequestBody @Valid UserDTO userDTO) throws UserNotFoundException {
+    public ResponseEntity<String> createUser(@RequestBody @Valid UserDTO userDTO) throws DuplicateUserException {
         String response = userService.createUser(userDTO);
         return ResponseEntity.ok(response);
     }
