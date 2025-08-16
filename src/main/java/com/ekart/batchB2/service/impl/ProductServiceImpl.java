@@ -52,7 +52,8 @@ public class ProductServiceImpl implements ProductService {
                 logger.warn("Product with name {} already exists", dto.getName());
                 duplicateNames.add("Product with name " + dto.getName() + " already exists");
             }
-            productRepository.save(productMapper.prepareProductEntity(dto));
+            else
+                productRepository.save(productMapper.prepareProductEntity(dto));
         }
         if (!duplicateNames.isEmpty()) {
             logger.warn("Duplicate products found: {}", duplicateNames);
