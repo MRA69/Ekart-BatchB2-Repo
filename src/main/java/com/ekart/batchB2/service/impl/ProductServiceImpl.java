@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
             throw new DuplicateProductException("Product with name " + productDTO.getName() + " already exists");
         }
         productRepository.save(productMapper.prepareProductEntity(productDTO));
-        logger.info("Product {} created successfully", productDTO.getName());
+        logger.info("Product {} created successfully", productDTO.getName()); // Log the successful creation of the product
         return "Product "+productDTO.getName()+" added successfully";
     }
 
