@@ -1,6 +1,7 @@
 package com.ekart.batchB2.service;
 
 import com.ekart.batchB2.dto.ProductDTO;
+import com.ekart.batchB2.dto.ProductNVDTO;
 import com.ekart.batchB2.exceptionhandler.DuplicateProductException;
 import com.ekart.batchB2.exceptionhandler.ProductNotFoundExcption;
 
@@ -13,6 +14,6 @@ public interface ProductService {
     List<ProductDTO> getAllProducts();
     List<ProductDTO> getProductsByCategory(String categoryId) throws ProductNotFoundExcption;
     List<ProductDTO> getProductsByName(String name);
-    String updateProduct(String id, ProductDTO productDTO) throws ProductNotFoundExcption;
+    String updateProduct(ProductNVDTO productDTO) throws ProductNotFoundExcption;
     String deleteProduct(String id) throws ProductNotFoundExcption;
 }

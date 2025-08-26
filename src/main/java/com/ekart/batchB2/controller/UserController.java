@@ -27,7 +27,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/login", consumes = "application/json")
     public ResponseEntity<Boolean> userLogin(@RequestBody @Valid LoginDTO loginDTO) throws UserNotFoundException {
         boolean isValidUser = userService.userLogin(loginDTO.getEmail(), loginDTO.getPassword());
         return ResponseEntity.ok(isValidUser);

@@ -1,6 +1,7 @@
 package com.ekart.batchB2.mapper;
 
 import com.ekart.batchB2.dto.ProductDTO;
+import com.ekart.batchB2.dto.ProductNVDTO;
 import com.ekart.batchB2.entity.Product;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,16 @@ public class ProductMapper {
         return productDTO;
     }
     public Product prepareProductEntity(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setCategoryId(productDTO.getCategoryId());
+        product.setStockQuantity(productDTO.getStockQuantity());
+        return product;
+    }
+
+    public Product prepareProductNVEntity(ProductNVDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());

@@ -35,7 +35,6 @@ public class ExceptionHandlerClass {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<ErrorMessage> handleDuplicateUserException(DuplicateUserException e) {
         logger.error("Duplicate user found: {}", e.getMessage(), e);
@@ -66,6 +65,24 @@ public class ExceptionHandlerClass {
     @ExceptionHandler(DuplicateProductException.class)
     public ResponseEntity<ErrorMessage> handleDuplicateProductException(DuplicateProductException e) {
         logger.error("Duplicate product found: {}", e.getMessage(), e);
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setMessage(e.getMessage());
+        errorMessage.setStatusCode(HttpStatus.CONFLICT.value());
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleCategoryNotFoundException(CategoryNotFoundException e) {
+        logger.error("Category not found: {}", e.getMessage(), e);
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setMessage(e.getMessage());
+        errorMessage.setStatusCode(HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicateCategoryException.class)
+    public ResponseEntity<ErrorMessage> handleDuplicateCategoryException(DuplicateCategoryException e) {
+        logger.error("Duplicate category found: {}", e.getMessage(), e);
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setMessage(e.getMessage());
         errorMessage.setStatusCode(HttpStatus.CONFLICT.value());

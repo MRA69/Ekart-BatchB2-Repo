@@ -1,6 +1,7 @@
 package com.ekart.batchB2.controller;
 
 import com.ekart.batchB2.dto.ProductDTO;
+import com.ekart.batchB2.dto.ProductNVDTO;
 import com.ekart.batchB2.exceptionhandler.DuplicateProductException;
 import com.ekart.batchB2.exceptionhandler.ProductNotFoundExcption;
 import com.ekart.batchB2.service.ProductService;
@@ -56,15 +57,15 @@ public class ProductController {
         return ResponseEntity.ok(productList);
     }
 
-    @PutMapping(value = "/update/{id}", consumes = "application/json")
-    public ResponseEntity<String> updateProduct(@PathVariable("id") String id, @RequestBody @Valid ProductDTO productDTO) throws ProductNotFoundExcption {
-        String response = productService.updateProduct(id, productDTO);
+    @PatchMapping(value = "/update", consumes = "application/json")
+    public ResponseEntity<String> updateProduct(@RequestBody @Valid ProductNVDTO productDTO) throws ProductNotFoundExcption {
+        String response = productService.updateProduct(productDTO);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable("id") String id) throws ProductNotFoundExcption {
-        String response = productService.deleteProduct(id);
+    @DeleteMapping(value = "/delete/{name}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("name") String name) throws ProductNotFoundExcption {
+        String response = productService.deleteProduct(name);
         return ResponseEntity.ok(response);
     }
 }

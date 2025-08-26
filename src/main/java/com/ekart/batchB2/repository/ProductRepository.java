@@ -10,6 +10,9 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
     boolean existsByName(String name);
-    Optional<Product> findByCategoryId(String categoryId);
+    List<Product> findByCategoryId(String categoryId);
     List<Product> findByNameContainingIgnoreCase(String name);
+    Product findByName(String name);
+    void deleteByName(String name);
+    void deleteByCategoryId(String categoryId);
 }
