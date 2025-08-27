@@ -20,8 +20,9 @@ public class EkartConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() // Allow all requests to static resources
+                .authorizeHttpRequests(auth -> auth// Allow all requests to static resources
+                        .requestMatchers("/user/login").authenticated()
+                        .requestMatchers("/user/create", "/user/getAll", "/user/updatePass", "/user/delete", "/categories/**", "/product/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
