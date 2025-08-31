@@ -97,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
             logger.warn("No products found for category ID: {}", categoryId);
             throw new ProductNotFoundExcption("No products found for category ID " + categoryId);
         }
+        logger.info("Products fetched successfully for category ID: {}", categoryId);
         return product.stream().map(productMapper::prepareProductDTO).collect(Collectors.toList());
     }
 

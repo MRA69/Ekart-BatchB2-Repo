@@ -82,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
             if(categoryDTO.getName() != null) existingCategory.setName(categoryDTO.getName());
             if(categoryDTO.getDescription() != null) existingCategory.setDescription(categoryDTO.getDescription());
             categoryRepository.save(existingCategory);
-            List<Product> products = productRepository.findByCategoryId(existingCategory.getName());
+            List<Product> products = productRepository.findByCategoryId(categoryDTO.getName());
             for(Product product : products){
                 ProductDTO productDTO = new ProductDTO();
                 productDTO.setCategoryId(categoryDTO.getName());

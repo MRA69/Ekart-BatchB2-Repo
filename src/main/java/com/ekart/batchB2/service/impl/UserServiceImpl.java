@@ -4,8 +4,6 @@ import com.ekart.batchB2.dto.UserDTO;
 import com.ekart.batchB2.entity.Address;
 import com.ekart.batchB2.entity.User;
 import com.ekart.batchB2.exceptionhandler.DuplicateUserException;
-import com.ekart.batchB2.exceptionhandler.ExceptionHandlerClass;
-import com.ekart.batchB2.exceptionhandler.UnauthorizedAccessException;
 import com.ekart.batchB2.exceptionhandler.UserNotFoundException;
 import com.ekart.batchB2.mapper.UserMapper;
 import com.ekart.batchB2.repository.AddressRepository;
@@ -56,6 +54,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = userRepository.save(userMapper.prepareUserEntity(userDTO));
         user.setAddresses(savedAddresses);
+        logger.info("User created successfully with email: {}", userDTO.getEmail());
         return "User "+userDTO.getUsername()+" created successfully";
     }
 
@@ -66,6 +65,7 @@ public class UserServiceImpl implements UserService {
         for (User user : users) {
             userDTOs.add(userMapper.prepareUserDTO(user));
         }
+        logger.info("All users fetched successfully");
         return userDTOs;
     }
 
@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
         }
         user.get().setPassword(passwordEncoder.encode(newPassword)); // Ideally, hash the password before saving
         userRepository.save(user.get());
+        logger.info("Password updated successfully for user with email: {}", email);
         return "Password updated successfully";
     }
 
@@ -89,6 +90,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User with email " + email + " not found");
         }
         userRepository.delete(user.get());
+        logger.info("User deleted successfully with email: {}", email);
         return "User "+user.get().getUsername()+" deleted successfully";
     }
 
@@ -99,6 +101,7 @@ public class UserServiceImpl implements UserService {
             logger.warn("User with email " + email + " not found");
             throw new UserNotFoundException("User with email " + email + " not found");
         }
+        logger.info("User login successful for user with email: {}", email);
         return user.map(value -> passwordEncoder.matches(password, value.getPassword())).orElse(false);
     }
 }
