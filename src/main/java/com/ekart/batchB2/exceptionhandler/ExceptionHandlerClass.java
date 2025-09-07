@@ -44,6 +44,15 @@ public class ExceptionHandlerClass {
         return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(AddressOperationException.class)
+    public ResponseEntity<ErrorMessage> handleAddressOperationException(AddressOperationException e) {
+        logger.error("Address operation failed: {}", e.getMessage(), e);
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setMessage(e.getMessage());
+        errorMessage.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ProductNotFoundExcption.class)
     public ResponseEntity<ErrorMessage> handleProductNotFoundException(ProductNotFoundExcption e) {
         logger.error("Product not found: {}", e.getMessage(), e);

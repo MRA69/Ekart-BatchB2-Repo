@@ -14,6 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 public class AddressDTO {
 
+    private String id;
     @NotBlank(message = "Name is required")
     @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     @Pattern(regexp = "^[a-zA-Z\\s\\.'-]+$", message = "Name can only contain letters, spaces, and basic punctuation")

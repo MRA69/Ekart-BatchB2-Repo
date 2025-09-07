@@ -4,15 +4,13 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "addresses")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
 
-    @Id
-    private String id; // MongoDB will auto-generate ObjectId
+    private String id;
     private String name; // Home, Office, etc.
     private String street;
     private String city;

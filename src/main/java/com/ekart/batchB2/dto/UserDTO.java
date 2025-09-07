@@ -31,7 +31,9 @@ public class UserDTO {
     @Min(value = 1000000000L, message = "Phone number must be exactly 10 digits")
     @Max(value = 9999999999L, message = "Phone number must be exactly 10 digits")
     private Long phoneNumber;
-
+    @NotBlank(message = "Role is required")
+    @Size(min = 3, max = 20, message = "Role must not exceed 20 characters")
+    private String role;
     @NotEmpty(message = "Addresses cannot be empty")
     @Size(min = 1, message = "At least one address is required")
     @Valid

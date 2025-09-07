@@ -23,5 +23,6 @@ public class User {
     private String email;
     private String password; // Store as hashed string
     private Long phoneNumber;
+    private String role;
     private List<Address> addresses;
 }

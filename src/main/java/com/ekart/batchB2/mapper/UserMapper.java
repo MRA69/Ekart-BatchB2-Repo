@@ -16,6 +16,7 @@ public class UserMapper {
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
         userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setRole(user.getRole());
         List<AddressDTO> addressDTOs = user.getAddresses().stream().map(this::prepareAddressDTO).toList();
         userDTO.setAddresses(addressDTOs);
         return userDTO;
@@ -26,6 +27,7 @@ public class UserMapper {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setRole(userDTO.getRole());
         List<Address> addresses = userDTO.getAddresses().stream().map(this::prepareAddressEntity).toList();
         user.setAddresses(addresses);
         return user;
@@ -33,6 +35,7 @@ public class UserMapper {
 
     public AddressDTO prepareAddressDTO(Address address){
         AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setId(address.getId());
         addressDTO.setName(address.getName());
         addressDTO.setStreet(address.getStreet());
         addressDTO.setCity(address.getCity());
@@ -44,6 +47,7 @@ public class UserMapper {
     }
     public Address prepareAddressEntity(AddressDTO addressDTO) {
         Address address = new Address();
+        address.setId(addressDTO.getId());
         address.setName(addressDTO.getName());
         address.setStreet(addressDTO.getStreet());
         address.setCity(addressDTO.getCity());
