@@ -10,7 +10,6 @@ import com.ekart.batchB2.exceptionhandler.CartNotFoundException;
 import com.ekart.batchB2.exceptionhandler.ProductNotFoundExcption;
 import com.ekart.batchB2.exceptionhandler.UserNotFoundException;
 import com.ekart.batchB2.mapper.CartMapper;
-import com.ekart.batchB2.repository.CartItemRepository;
 import com.ekart.batchB2.repository.CartRepository;
 import com.ekart.batchB2.repository.ProductRepository;
 import com.ekart.batchB2.repository.UserRepository;
@@ -40,9 +39,6 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     ProductRepository productRepository;
-
-    @Autowired
-    CartItemRepository cartItemRepository;
 
     @Autowired
     CartMapper cartMapper;
@@ -97,7 +93,6 @@ public class CartServiceImpl implements CartService {
             if (cartItem.getProductName().equals(product.getName())) {
                 cartItem.setQuantity(cartItem.getQuantity() + cartEntryDTO.getItem().getQuantity());
                 cartItem.setTotal(cartItem.getQuantity() * cartItem.getPrice());
-                cartItemRepository.save(cartItem);
                 logger.info("Updated quantity for product " + cartItem.getProductName() + " in cart");
                 productExists = true;
                 break;
@@ -111,7 +106,6 @@ public class CartServiceImpl implements CartService {
             newCartItem.setPrice(product.getPrice());
             newCartItem.setQuantity(cartEntryDTO.getItem().getQuantity());
             newCartItem.setTotal(newCartItem.getQuantity() * newCartItem.getPrice());
-            newCartItem = cartItemRepository.save(newCartItem);
 
             if (cart.getItems() == null) {
                 cart.setItems(new ArrayList<>());
@@ -151,7 +145,6 @@ public class CartServiceImpl implements CartService {
                 if(cartItem.getProductName().equals(cartReqDTO.getProductName())){
                     cartItem.setQuantity(cartItem.getQuantity() + cartReqDTO.getQuantity());
                     cartItem.setTotal(cartItem.getQuantity() * cartItem.getPrice());
-                    cartItemRepository.save(cartItem);
                     logger.info("Product " + cartItem.getProductName() + " updated in cart item successfully");
                     cartOptional.get().setItems(cartOptional.get().getItems());
                     cartOptional.get().setTotalAmount(cartOptional.get().getItems().stream()
@@ -191,7 +184,6 @@ public class CartServiceImpl implements CartService {
         else{
             for(CartItem cartItem : cartOptional.get().getItems()){
                 if(cartItem.getProductName().equals(productId)){
-                    cartItemRepository.delete(cartItem);
                     logger.info("Product " + cartItem.getProductName() + " removed from cart successfully");
                     cartOptional.get().setItems(cartOptional.get().getItems().stream()
                             .filter(item -> !item.getProductName().equals(productId))
@@ -218,7 +210,6 @@ public class CartServiceImpl implements CartService {
             logger.warn("Cart not found for user with email " + userId);
             throw new CartNotFoundException("Cart not found for user with email " + userId);
         }
-        cartItemRepository.deleteAll();
         List<CartItem> cartItems = cartOptional.get().getItems();
         logger.info("Cart items cleared successfully and cart values is {}", cartItems);
         cartOptional.get().setItems(new ArrayList<>());
