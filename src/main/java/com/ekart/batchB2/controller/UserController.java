@@ -1,7 +1,7 @@
 package com.ekart.batchB2.controller;
 
 import com.ekart.batchB2.dto.*;
-import com.ekart.batchB2.exceptionhandler.AddressOperationException;
+import com.ekart.batchB2.exceptionhandler.AddressOperation;
 import com.ekart.batchB2.exceptionhandler.DuplicateUserException;
 import com.ekart.batchB2.exceptionhandler.UserNotFoundException;
 import com.ekart.batchB2.service.UserService;
@@ -9,13 +9,10 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Validated
 @RequestMapping("/user")
@@ -62,7 +59,7 @@ public class UserController {
     @PostMapping(value = "/addAddress/{email}", consumes = "application/json")
     public ResponseEntity<String> addAddress(
             @PathVariable("email") String email, 
-            @RequestBody @Valid AddressDTO addressDTO) throws AddressOperationException, UserNotFoundException {
+            @RequestBody @Valid AddressDTO addressDTO) throws AddressOperation, UserNotFoundException {
             String message = userService.createAddressAndupdateAddress(email, addressDTO);
             return ResponseEntity.ok(message);
     }
