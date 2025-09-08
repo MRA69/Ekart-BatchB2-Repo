@@ -4,7 +4,7 @@ import com.ekart.batchB2.dto.AddressDTO;
 import com.ekart.batchB2.dto.UserDTO;
 import com.ekart.batchB2.entity.Address;
 import com.ekart.batchB2.entity.User;
-import com.ekart.batchB2.exceptionhandler.AddressOperationException;
+import com.ekart.batchB2.exceptionhandler.AddressOperation;
 import com.ekart.batchB2.exceptionhandler.DuplicateUserException;
 import com.ekart.batchB2.exceptionhandler.UserNotFoundException;
 import com.ekart.batchB2.mapper.UserMapper;
@@ -62,14 +62,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String createAddressAndupdateAddress(String email, AddressDTO addressDTO) 
-            throws UserNotFoundException, AddressOperationException {
+            throws UserNotFoundException, AddressOperation {
         
         logger.info("Processing address operation for user: {}", email);
 
         try {
             // Validate input
             if (addressDTO == null) {
-                throw new AddressOperationException("Address data cannot be null");
+                throw new AddressOperation("Address data cannot be null");
             }
             
             // Find user or throw exception
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
                                         addr.getCountry().equalsIgnoreCase(addressDTO.getCountry()));
                                         
                 if (duplicateExists) {
-                    throw new AddressOperationException("This address already exists");
+                    throw new AddressOperation("This address already exists");
                 }
             }
             
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
                 Address existingAddress = addresses.stream()
                         .filter(addr -> addr.getId().equals(addressDTO.getId()))
                         .findFirst()
-                        .orElseThrow(() -> new AddressOperationException("Address not found with ID: " + addressDTO.getId()));
+                        .orElseThrow(() -> new AddressOperation("Address not found with ID: " + addressDTO.getId()));
                 
                 // Update address fields
                 existingAddress.setName(addressDTO.getName());
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
                 logger.info("New address added successfully for user: {}", email);
                 return "Address added successfully";
             }
-        } catch (UserNotFoundException | AddressOperationException e) {
+        } catch (UserNotFoundException | AddressOperation e) {
             // Re-throw these exceptions as they are already properly typed
             logger.error("Error processing address operation for user: {}", email, e);
             throw e;
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
             String errorMsg = String.format("Failed to process address operation for user %s: %s", 
                     email, e.getMessage());
             logger.error(errorMsg, e);
-            throw new AddressOperationException("An error occurred while processing your request");
+            throw new AddressOperation("An error occurred while processing your request");
         }
     }
 

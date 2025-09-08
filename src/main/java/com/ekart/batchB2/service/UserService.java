@@ -2,7 +2,7 @@ package com.ekart.batchB2.service;
 
 import com.ekart.batchB2.dto.AddressDTO;
 import com.ekart.batchB2.dto.UserDTO;
-import com.ekart.batchB2.exceptionhandler.AddressOperationException;
+import com.ekart.batchB2.exceptionhandler.AddressOperation;
 import com.ekart.batchB2.exceptionhandler.DuplicateUserException;
 import com.ekart.batchB2.exceptionhandler.UserNotFoundException;
 
@@ -12,8 +12,7 @@ public interface UserService {
     // Define methods that the UserService should implement
     String createUser(UserDTO userDTO) throws DuplicateUserException;
     
-    String createAddressAndupdateAddress(String email, AddressDTO addressDTO) 
-            throws UserNotFoundException, AddressOperationException;
+    String createAddressAndupdateAddress(String email, AddressDTO addressDTO) throws UserNotFoundException, AddressOperation;
             
     List<UserDTO> getAllUsers();
     

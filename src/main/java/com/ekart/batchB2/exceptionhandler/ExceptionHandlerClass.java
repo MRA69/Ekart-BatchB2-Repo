@@ -44,8 +44,8 @@ public class ExceptionHandlerClass {
         return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(AddressOperationException.class)
-    public ResponseEntity<ErrorMessage> handleAddressOperationException(AddressOperationException e) {
+    @ExceptionHandler(AddressOperation.class)
+    public ResponseEntity<ErrorMessage> handleAddressOperationException(AddressOperation e) {
         logger.error("Address operation failed: {}", e.getMessage(), e);
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setMessage(e.getMessage());
