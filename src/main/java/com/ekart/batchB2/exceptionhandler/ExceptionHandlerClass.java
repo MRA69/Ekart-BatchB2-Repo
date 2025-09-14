@@ -89,6 +89,15 @@ public class ExceptionHandlerClass {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleOrderNotFoundException(OrderNotFoundException e) {
+        logger.error("Order not found: {}", e.getMessage(), e);
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setMessage(e.getMessage());
+        errorMessage.setStatusCode(HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(DuplicateCategoryException.class)
     public ResponseEntity<ErrorMessage> handleDuplicateCategoryException(DuplicateCategoryException e) {
         logger.error("Duplicate category found: {}", e.getMessage(), e);

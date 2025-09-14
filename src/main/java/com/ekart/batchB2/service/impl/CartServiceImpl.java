@@ -50,7 +50,7 @@ public class CartServiceImpl implements CartService {
             logger.warn("User with email " + userId + " not found");
             throw new UserNotFoundException("User with email " + userId + " not found");
         }
-        if (!cartOptional.isPresent()) {
+        if (cartOptional.isEmpty()) {
             logger.warn("No cart found for user with email " + userId);
             throw new CartNotFoundException("Cart not found for user with email " + userId);
         }
@@ -131,7 +131,7 @@ public class CartServiceImpl implements CartService {
             logger.warn("User with email " + userId + " not found");
             throw new UserNotFoundException("User with email " + userId + " not found");
         }
-        if (!cartOptional.isPresent()) {
+        if (cartOptional.isEmpty()) {
             logger.warn("Cart not found for user with email " + userId);
             throw new CartNotFoundException("Cart not found for user with email " + userId);
         }
@@ -172,7 +172,7 @@ public class CartServiceImpl implements CartService {
             logger.warn("User with email " + userId + " not found");
             throw new UserNotFoundException("User with email " + userId + " not found");
         }
-        if (!cartOptional.isPresent()) {
+        if (cartOptional.isEmpty()) {
             logger.warn("Cart not found for user with email " + userId);
             throw new CartNotFoundException("Cart not found for user with email " + userId);
         }
@@ -194,6 +194,10 @@ public class CartServiceImpl implements CartService {
                     cartRepository.save(cartOptional.get());
                     logger.info("Cart updated successfully after deletion of product {}", productId);
                 }
+                else{
+                    logger.info("Product {} not found in cart", productId);
+                    throw new ProductNotFoundExcption("Product " + productId + " not found in cart");
+                }
             }
             return cartMapper.prepareCartDTO(cartOptional.get());
         }
@@ -206,7 +210,7 @@ public class CartServiceImpl implements CartService {
             logger.warn("User with email " + userId + " not found");
             throw new UserNotFoundException("User with email " + userId + " not found");
         }
-        if (!cartOptional.isPresent()) {
+        if (cartOptional.isEmpty()) {
             logger.warn("Cart not found for user with email " + userId);
             throw new CartNotFoundException("Cart not found for user with email " + userId);
         }
