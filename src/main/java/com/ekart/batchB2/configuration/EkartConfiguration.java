@@ -23,7 +23,7 @@ public class EkartConfiguration {
                 .authorizeHttpRequests(auth -> auth// Allow all requests to static resources
                         .requestMatchers("/user/login").authenticated()
                         .requestMatchers("/user/create", "/user/getAll", "/user/getByEmail/**", "/user/addAddress/**", "/user/setDefaultAddress/**",
-                                "/user/updatePass", "/user/removeAddress/**", "/user/delete", "/categories/**", "/product/**", "/cart/**").permitAll()
+                                "/user/updatePass", "/user/removeAddress/**", "/user/delete", "/categories/**", "/product/**", "/cart/**", "/order/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
