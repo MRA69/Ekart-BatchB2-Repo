@@ -51,6 +51,10 @@ public class OrderServiceImpl implements OrderService {
         List<CartItem> cartItems = cartOptional.get().getItems();
         List<Item> orderEntries = new ArrayList<>();
         double totalAmount = 0;
+        if(cartItems.isEmpty()){
+            logger.warn("Cart is empty");
+            throw new CartNotFoundException("Cart is empty");
+        }
         for(CartItem item : cartItems){
             Product product = productRepository.findByName(item.getProductName());
             if(product == null){
@@ -77,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(newOrder);
         logger.info("Order created successfully");
         cartOptional.get().setItems(new ArrayList<>());
+        cartOptional.get().setTotalAmount(0.00);
         cartRepository.save(cartOptional.get());
         logger.info("Cart cleared successfully");
         return orderMapper.prepareOrderDTO(savedOrder);

@@ -15,6 +15,7 @@ public class OrderMapper {
         orderDTO.setUserId(order.getUserId());
         List<OrderItemDTO> orderitem = order.getItems().stream().map(this::prepareOrderItemDTO).toList();
         orderDTO.setItems(orderitem);
+        orderDTO.setStatus(order.getStatus());
         orderDTO.setTotalAmount(order.getTotalAmount());
         orderDTO.setCreatedAt(order.getCreatedAt());
         return orderDTO;
@@ -24,6 +25,7 @@ public class OrderMapper {
         order.setUserId(orderDTO.getUserId());
         List<Item> orderitem = orderDTO.getItems().stream().map(this::prepareOrderItemEntity).toList();
         order.setItems(orderitem);
+        order.setStatus(orderDTO.getStatus());
         order.setTotalAmount(orderDTO.getTotalAmount());
         order.setCreatedAt(orderDTO.getCreatedAt());
         return order;
