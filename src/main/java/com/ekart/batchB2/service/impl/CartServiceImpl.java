@@ -78,6 +78,11 @@ public class CartServiceImpl implements CartService {
             throw new ProductNotFoundExcption("Product not found for product name " + cartEntryDTO.getItem().getProductName());
         }
 
+        if(cartEntryDTO.getItem().getQuantity() > product.getStockQuantity()){
+            logger.warn("Product quantity is not available");
+            throw new ProductNotFoundExcption(product.getName() + " is not available in stock");
+        }
+
         // Get or create the user's cart
         Optional<Cart> cartOptional = cartRepository.findByUserId(userId);
         Cart cart = cartOptional.orElseGet(() -> {
