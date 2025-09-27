@@ -98,6 +98,8 @@ public class CartServiceImpl implements CartService {
             if (cartItem.getProductName().equals(product.getName())) {
                 cartItem.setQuantity(cartItem.getQuantity() + cartEntryDTO.getItem().getQuantity());
                 cartItem.setTotal(cartItem.getQuantity() * cartItem.getPrice());
+                product.setStockQuantity(product.getStockQuantity() - cartEntryDTO.getItem().getQuantity());
+                productRepository.save(product);
                 logger.info("Updated quantity for product " + cartItem.getProductName() + " in cart");
                 productExists = true;
                 break;
@@ -116,6 +118,8 @@ public class CartServiceImpl implements CartService {
                 cart.setItems(new ArrayList<>());
             }
             cart.getItems().add(newCartItem);
+            product.setStockQuantity(product.getStockQuantity() - cartEntryDTO.getItem().getQuantity());
+            productRepository.save(product);
             logger.info("Added new product " + newCartItem.getProductName() + " to cart");
         }
 
@@ -145,6 +149,10 @@ public class CartServiceImpl implements CartService {
             logger.warn("Product not found for product name " + cartReqDTO.getProductName());
             throw new ProductNotFoundExcption("Product not found for product name " + cartReqDTO.getProductName());
         }
+        if(product.getStockQuantity() < cartReqDTO.getQuantity()){
+            logger.warn("Product quantity is not available");
+            throw new ProductNotFoundExcption(product.getName() + " is not available in stock");
+        }
         else{
             for(CartItem cartItem : cartOptional.get().getItems()){
                 if(cartItem.getProductName().equals(cartReqDTO.getProductName())){
@@ -155,6 +163,8 @@ public class CartServiceImpl implements CartService {
                     cartOptional.get().setTotalAmount(cartOptional.get().getItems().stream()
                             .mapToDouble(CartItem::getTotal)
                             .sum());
+                    product.setStockQuantity(product.getStockQuantity() - cartReqDTO.getQuantity());
+                    productRepository.save(product);
                     logger.info("Cart updated successfully");
                     cartRepository.save(cartOptional.get());
                 }
@@ -196,6 +206,8 @@ public class CartServiceImpl implements CartService {
                     cartOptional.get().setTotalAmount(cartOptional.get().getItems().stream()
                             .mapToDouble(CartItem::getTotal)
                             .sum());
+                    product.setStockQuantity(product.getStockQuantity() + cartItem.getQuantity());
+                    productRepository.save(product);
                     cartRepository.save(cartOptional.get());
                     logger.info("Cart updated successfully after deletion of product {}", productId);
                 }
@@ -221,6 +233,11 @@ public class CartServiceImpl implements CartService {
         }
         List<CartItem> cartItems = cartOptional.get().getItems();
         logger.info("Cart items cleared successfully and cart values is {}", cartItems);
+        for(CartItem cartItem : cartItems){
+            Product product = productRepository.findByName(cartItem.getProductName());
+            product.setStockQuantity(product.getStockQuantity() + cartItem.getQuantity());
+            productRepository.save(product);
+        }
         cartOptional.get().setItems(new ArrayList<>());
         cartRepository.save(cartOptional.get());
         logger.info("Cart cleared successfully");
